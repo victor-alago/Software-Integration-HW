@@ -4,7 +4,10 @@
   "description": "A node js and mongdb app, developed using software integration principles.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-development": "NODE_ENV=development node index.js",
+    "start-production": "NODE_ENV=production node index.js",
+    "start-release": "NODE_ENV=release node index.js"
   },
   "keywords": [],
   "author": "",

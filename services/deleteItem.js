@@ -3,11 +3,17 @@ const Item = require('../models/Item');
 const deleteItem = async (req, res) => {
   try {
     const item = await Item.findById(req.params.id);
-    if (!item) return res.status(404).json({ msg: 'Item not found' });
-
-    await item.remove();
-    res.json({ msg: 'Item removed' });
-  } catch (err) {
+    if (item.userId === req.body.id) {
+        await item.deleteOne();
+        res.status(200).json("Item has been deleted");
+    }
+    
+   else {
+    return next(
+      handleError(500, "You can have to login to delete your tweet")
+    );
+    }
+  }catch (err) {
     res.status(500).send('Server Error');
   }
 };

@@ -12,9 +12,9 @@ router.post('/create/', createItem);
 router.get('/', readItems);
 
 // Update an item
-router.put('update/:id', updateItem);
+router.put('/update/:id', updateItem);
 
 // Delete an item
-router.delete('delete/:id', deleteItem);
+router.delete('/delete/:id', deleteItem);
 
 module.exports = router;

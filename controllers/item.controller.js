@@ -22,16 +22,18 @@ exports.readItems = async () => {
 
 
 
-exports.updateItem = async (id, item_content) => {
-  const { name, description } = item_content;
-  try {
-    let item = await Item.findByIdAndUpdate(id, { name, description });
-    if (!item) throw Error('Item not found');
 
-  } catch (err) {
-    return Promise.reject(err);
-  }
-};
+
+exports.updateItem = async (id, item_content) => {
+    const { name, description } = item_content;
+    try {
+      let item = await Item.findByIdAndUpdate(id, { name, description }, { new: true });
+      if (!item) throw new Error('Item not found');
+      return item;  // Make sure to return the updated item
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  };
 
 
 

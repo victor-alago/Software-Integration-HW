@@ -56,3 +56,18 @@ export const updateItem = async (id, data) => {
     }
   };
   
+
+
+export const deleteItem = async (id) => {
+    try {
+      const response = await fetch(`${API_URL}/items/${id}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        throw new Error('Failed to delete item');
+      }
+    } catch (error) {
+      console.error('Error deleting item:', error);
+      throw error;
+    }
+  };

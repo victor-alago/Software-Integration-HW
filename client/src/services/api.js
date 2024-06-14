@@ -35,3 +35,24 @@ export const fetchItems = async () => {
       throw error;
     }
   };
+
+
+
+export const updateItem = async (id, data) => {
+    try {
+      const response = await fetch(`${API_URL}/items/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to update item');
+      }
+    } catch (error) {
+      console.error('Error updating item:', error);
+      throw error;
+    }
+  };
+  

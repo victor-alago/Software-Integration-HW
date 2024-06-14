@@ -22,6 +22,78 @@ jest.mock('./services/api');
 
 
 
+//3
+describe('ItemList', () => {
+  const items = [
+    { _id: 1, name: 'Item 1', description: 'Description 1' },
+    { _id: 2, name: 'Item 2', description: 'Description 2' },
+  ];
+
+  test('renders items correctly', async () => {
+    fetchItems.mockResolvedValue(items);
+    const setItems = jest.fn();
+
+    await act(async () => {
+      render(<ItemList items={items} setItems={setItems} />);
+    });
+
+    expect(screen.getByText(/Item 1/i)).toBeInTheDocument();
+    expect(screen.getByText(/Description 1/i)).toBeInTheDocument();
+    expect(screen.getByText(/Item 2/i)).toBeInTheDocument();
+    expect(screen.getByText(/Description 2/i)).toBeInTheDocument();
+  });
+
+  test('handles delete item', async () => {
+    fetchItems.mockResolvedValue(items);
+    deleteItem.mockResolvedValue({});
+    const setItems = jest.fn();
+
+    await act(async () => {
+      render(<ItemList items={items} setItems={setItems} />);
+    });
+
+    await act(async () => {
+      fireEvent.click(screen.getAllByText(/Delete/i)[0]);
+    });
+
+    await waitFor(() => {
+      expect(deleteItem).toHaveBeenCalledWith(1);
+      expect(setItems).toHaveBeenCalled();
+    });
+  });
+
+  test('handles edit item', async () => {
+    fetchItems.mockResolvedValue(items);
+    updateItem.mockResolvedValue({});
+    const setItems = jest.fn();
+
+    await act(async () => {
+      render(<ItemList items={items} setItems={setItems} />);
+    });
+
+    fireEvent.click(screen.getAllByText(/Edit/i)[0]);
+    fireEvent.change(screen.getByDisplayValue(/Item 1/i), { target: { value: 'Updated Item 1' } });
+    fireEvent.change(screen.getByDisplayValue(/Description 1/i), { target: { value: 'Updated Description 1' } });
+
+    await act(async () => {
+      fireEvent.click(screen.getByText(/Save/i));
+    });
+
+    await waitFor(() => {
+      expect(updateItem).toHaveBeenCalledWith(1, { name: 'Updated Item 1', description: 'Updated Description 1' });
+      expect(setItems).toHaveBeenCalled();
+    });
+  });
+});
+
+
+
+global.fetch = jest.fn();
+
+afterEach(() => {
+  fetch.mockClear();
+});
+
 
 
 

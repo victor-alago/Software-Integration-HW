@@ -22,7 +22,68 @@ jest.mock('./services/api');
 
 
 
-//3
+describe('App Component', () => {
+  test('renders item management header', () => {
+    render(<App />);
+    const headerElement = screen.getByText(/Item Management/i);
+    expect(headerElement).toBeInTheDocument();
+  });
+
+  test('adds new item to the list', async () => {
+    render(<App />);
+
+    // Selecting elements
+    const nameInput = screen.getByPlaceholderText(/Enter item name/i);
+    const descriptionInput = screen.getByPlaceholderText(/Enter item description/i);
+    const addButton = screen.getByText(/Add Item/i);
+
+    // Simulating user input and form submission
+    fireEvent.change(nameInput, { target: { value: 'Test Item' } });
+    fireEvent.change(descriptionInput, { target: { value: 'Test Description' } });
+
+    await act(async () => {
+      fireEvent.click(addButton);
+    });
+
+    // Assertion to check if the new item is added to the list
+    const itemNameElement = await screen.findByText(/Test Item/i);
+    expect(itemNameElement).toBeInTheDocument();
+  });
+});
+
+
+
+describe('ItemForm', () => {
+  test('renders form elements correctly', () => {
+    render(<ItemForm onItemCreated={jest.fn()} />);
+    expect(screen.getByPlaceholderText(/Enter item name/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/Enter item description/i)).toBeInTheDocument();
+    expect(screen.getByText(/Add Item/i)).toBeInTheDocument();
+  });
+
+  test('handles form submission', async () => {
+    const onItemCreated = jest.fn();
+    createItem.mockResolvedValue({ id: 1, name: 'Test Item', description: 'Test Description' });
+
+    render(<ItemForm onItemCreated={onItemCreated} />);
+
+    fireEvent.change(screen.getByPlaceholderText(/Enter item name/i), { target: { value: 'Test Item' } });
+    fireEvent.change(screen.getByPlaceholderText(/Enter item description/i), { target: { value: 'Test Description' } });
+
+    await act(async () => {
+      fireEvent.click(screen.getByText(/Add Item/i));
+    });
+
+    await waitFor(() => {
+      expect(createItem).toHaveBeenCalledWith({ name: 'Test Item', description: 'Test Description' });
+      expect(onItemCreated).toHaveBeenCalledWith({ id: 1, name: 'Test Item', description: 'Test Description' });
+    });
+  });
+});
+
+
+
+
 describe('ItemList', () => {
   const items = [
     { _id: 1, name: 'Item 1', description: 'Description 1' },
@@ -97,7 +158,7 @@ afterEach(() => {
 
 
 
-//4
+
 describe('API calls', () => {
   const API_URL = 'http://localhost:3000/api';
 

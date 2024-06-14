@@ -19,3 +19,19 @@ export const createItem = async (data) => {
     throw error;
   }
 };
+
+
+
+export const fetchItems = async () => {
+    try {
+      const response = await fetch(`${API_URL}/items`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch items');
+      }
+      const items = await response.json();
+      return items;
+    } catch (error) {
+      console.error('Error fetching items:', error);
+      throw error;
+    }
+  };

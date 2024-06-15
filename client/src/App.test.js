@@ -12,7 +12,7 @@ global.fetch = jest.fn();
 jest.spyOn(global, 'fetch').mockResolvedValueOnce({
   ok: true,
   json: async () => ({
-    id: 1,
+    _id: 1,
     name: 'Test Item',
     description: 'Test Description'
   })

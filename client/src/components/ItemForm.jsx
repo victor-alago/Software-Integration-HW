@@ -5,6 +5,7 @@ import '../App.css';
 const ItemForm = ({ onItemCreated }) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -13,13 +14,16 @@ const ItemForm = ({ onItemCreated }) => {
       onItemCreated(newItem);
       setName('');
       setDescription('');
+      setError(null);
     } catch (error) {
       console.error('Error creating item:', error);
+      setError('Failed to create item. Please try again.');
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
+      {error && <div className="error-message">{error}</div>}
       <input
         type="text"
         placeholder="Enter item name"

@@ -6,9 +6,9 @@
   "scripts": {
     "test": "mocha ./tests/**/*.spec.js",
     "start": "nodemon server.js",
-    "start:development": "NODE_ENV=development node index.js",
-    "start:production": "NODE_ENV=production node index.js",
-    "start:release": "NODE_ENV=release node index.js"
+    "start:development": "NODE_ENV=development node server.js",
+    "start:production": "NODE_ENV=production node server.js",
+    "start:release": "NODE_ENV=release node server.js"
   },
   "keywords": [],
   "author": "",

@@ -13,6 +13,7 @@ const ItemList = ({ items, setItems }) => {
       try {
         const itemsData = await fetchItems();
         setItems(itemsData);
+        setError(null);
       } catch (error) {
         console.error('Error fetching items:', error);
         setError('Failed to fetch items. Please try again.');
@@ -25,6 +26,7 @@ const ItemList = ({ items, setItems }) => {
     try {
       await deleteItem(id);
       setItems(items.filter(item => item._id !== id));
+      setError(null);
     } catch (error) {
       console.error('Error deleting item:', error);
       setError('Failed to delete item. Please try again.');
@@ -38,6 +40,7 @@ const ItemList = ({ items, setItems }) => {
       setEditingItemId(null);
       setEditingItemName('');
       setEditingItemDescription('');
+      setError(null);
     } catch (error) {
       console.error('Error updating item:', error);
       setError('Failed to update item. Please try again.');
